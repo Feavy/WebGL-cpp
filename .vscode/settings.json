@@ -51,7 +51,7 @@
     "emeraldwalk.runonsave": {
         "commands": [
             {
-                "match": "\\.cpp$",
+                "match": "\\.(cpp|js)$",
                 "cmd": "make"
             }
         ]
