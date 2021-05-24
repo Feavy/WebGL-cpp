@@ -1,5 +1,5 @@
-#include <iostream>
 #include <chrono>
+#include <memory>
 
 #include "Person/Person.h"
 
@@ -9,7 +9,7 @@ extern "C" {
     void helloJavascript();
  
     void hello() {
-        std::cout << "Hello from C++!" << std::endl;
+        printf("Hello from C++\n");
     }
 }
 
@@ -19,9 +19,11 @@ int64_t get_time() {
 
 int main() {
     Person person = Person {"Jean"};
+    std::unique_ptr<Person> person2{new Person{"Pierre"}};
+    person2->sayHello();
     person.sayHello();
-    std::cout << "Hello world!" << std::endl;
-    std::cout << "Current time is " << get_time() << std::endl;
+    printf("Hello world!\n");
+    printf("Current time is %d\n", get_time());
     helloJavascript();
     return 0;
 }
