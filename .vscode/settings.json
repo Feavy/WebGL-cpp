@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "*.gd": "lua",
+        "chrono": "cpp"
+    },
+    "emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": "\\.cpp$",
+                "cmd": "make"
+            }
+        ]
+    }
+}
