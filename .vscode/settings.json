@@ -48,13 +48,9 @@
         "xtr1common": "cpp",
         "xutility": "cpp"
     },
-    "emeraldwalk.runonsave": {
-        "commands": [
-            {
-                "match": "\\.(cpp|js)$",
-                "cmd": "make"
-            }
-        ]
-    },
-    "liveServer.settings.port": 5501
+    "liveServer.settings.port": 5501,
+    "C_Cpp.default.compilerPath": "C:\\Users\\Feavy\\AppData\\Local\\emsdk\\upstream\\bin\\clang.exe",
+    "C_Cpp.default.includePath": [
+        "C:\\Users\\Feavy\\AppData\\Local\\emsdk\\upstream\\emscripten\\cache\\sysroot\\include"
+    ]
 }

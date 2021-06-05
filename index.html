@@ -6,24 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V to WASM</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+    <canvas width="500" height="500" id="canvas"></canvas>
     <script src="dist/main.js"></script>
+    <script src="./helper.js"></script>
     <script>
-        function getString (ptr) {
-            const view = new Uint8Array(wasmMemory.buffer, ptr);
-            let string = '';
-            let i = 0;
-            while (view[i] !== 0) {
-                string += String.fromCharCode(view[i++]);
-                if(i > 50) {
-                    console.error("[getString] probably encountered an error.");
-                    return string;
-                }
-            }
-            return string;
-        }
         Module['onRuntimeInitialized'] = function () {
             Module._hello();
         };
