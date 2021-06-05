@@ -7,6 +7,8 @@
 #include "Person/Person.h"
 #include "Test.cpp"
 
+#include "opengl.h"
+
 using namespace std::chrono;
 
 extern "C" {
@@ -40,6 +42,8 @@ int main() {
     printf("Current time is %llu\n", get_time());
     consoleLog("console.log from C++");
     consoleLog(msg);
+
+    render_test();
 
     return 0;
 }
