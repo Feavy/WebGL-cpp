@@ -61,10 +61,6 @@ GLuint LoadShader(GLenum type, const char* shaderSrc) {
   return shader;
 }
 
-std::vector<int> testArray() {
-  return {0, 1, 2, 3};
-}
-
 int main() {
   Test test{"Test1"};
   test.call();
