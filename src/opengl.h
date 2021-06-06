@@ -1,3 +1,3 @@
 #pragma once
 
-void render_test();
+void opengl_init();

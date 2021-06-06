@@ -43,7 +43,7 @@ int main() {
     consoleLog("console.log from C++");
     consoleLog(msg);
 
-    render_test();
+    opengl_init();
 
     return 0;
 }

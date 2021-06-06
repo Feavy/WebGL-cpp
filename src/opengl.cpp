@@ -1,3 +1,4 @@
+#include <emscripten.h>
 #include <emscripten/html5.h>
 #include <memory>
 #include <string>
@@ -6,19 +7,86 @@
 unsigned int loadShader(unsigned int shaderType, const char *source);
 unsigned int loadProgram(unsigned int vertexShader, unsigned int fragmentShader);
 
-void render_test() {
+unsigned int shaderProgram;
+
+void opengl_init() {
+    printf("[opengl_init]\n");
     EmscriptenWebGLContextAttributes config{stencil : GL_TRUE, antialias : GL_TRUE};
 
     EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context = emscripten_webgl_create_context("canvas", &config);
     emscripten_webgl_make_context_current(context);
     emscripten_console_log("Context created");
 
-    // TODO : voir partie 4.2 -> Viewport
+    int nrAttributes;
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
 
+
+    // Attention -> Différence de syntaxe des shaders GL2 / GL3
+
+    // Utilisation de varying [<precision>p] vec4 <var>; pour passer des vec d'un shader à l'autre
+    // Exemple : varying highp vec4 vertexColor;
+
+    const char *vertexShaderSource = "attribute vec4 vPosition;                 \n"
+                                     "varying mediump vec4 vertexColor;         \n"
+                                     "void main()                               \n"
+                                     "{                                         \n"
+                                     "   gl_Position = vPosition;               \n"
+                                     "   vertexColor = vec4(0.5, 0.0, 0.0, 1.0);\n"
+                                     "}                                         \n";
+
+    unsigned int vertexShader = loadShader(GL_VERTEX_SHADER, vertexShaderSource);
+
+    const char *fragmentShaderSource = "precision mediump float;                \n"
+                                       "varying mediump vec4 vertexColor;       \n"
+                                       "uniform vec4 ourColor;                  \n"
+                                       "void main()                             \n"
+                                       "{                                       \n"
+                                       "  gl_FragColor = ourColor;              \n"
+                                       "}                                       \n";
+
+    unsigned int fragmentShader = loadShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+
+    shaderProgram = loadProgram(vertexShader, fragmentShader);
+
+    int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+
+    glUseProgram(shaderProgram);
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+
+    EM_ASM({
+        var i = 0;
+        var lastTime = 0;
+        function step(timestamp) {
+            var dt = timestamp - lastTime;
+            lastTime = timestamp;
+            Module._newFrame(dt);
+            if (i++ < 60*5) {
+                requestAnimationFrame(step);
+            }
+        }
+        function prestep(timestamp) {
+            lastTime = timestamp;
+            requestAnimationFrame(step);
+        }
+        requestAnimationFrame(prestep);
+    });
+    printf("[opengl_init] Done.\n");
+}
+
+float elapsed;
+
+void opengl_draw(float dt) {
     // OpenGL ES 2.0
 
+    // TODO : voir partie 4.2 -> Viewport
+
+
     glClearColor(1, 1, 1, 1);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     // Dessin du triangle
 
@@ -48,32 +116,13 @@ void render_test() {
     // GL_STATIC_DRAW: the data is set only once and used many times.
     // GL_DYNAMIC_DRAW: the data is changed a lot and used many times.
 
-    // Attention -> Différence de syntaxe des shaders GL2 / GL3
+    float greenValue = (sin(elapsed/1000.f) / 2.0f) + 0.5f;
 
-    const char *vertexShaderSource = "attribute vec4 vPosition;    \n"
-                                     "void main()                  \n"
-                                     "{                            \n"
-                                     "   gl_Position = vPosition;  \n"
-                                     "}                            \n";
-
-    unsigned int vertexShader = loadShader(GL_VERTEX_SHADER, vertexShaderSource);
-
-    const char *fragmentShaderSource = "precision mediump float;\n"
-                                       "void main()                                  \n"
-                                       "{                                            \n"
-                                       "  gl_FragColor = vec4 ( 1.0, 0.5, 0.2, 1.0 );\n"
-                                       "}                                            \n";
-
-    unsigned int fragmentShader = loadShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
-
-    unsigned int shaderProgram = loadProgram(vertexShader, fragmentShader);
-
+    int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
     glUseProgram(shaderProgram);
+    glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    // Note : VAO uniquement dispo en WebGL2 (77% de coverage browers)
+        // Note : VAO uniquement dispo en WebGL2 (77% de coverage browers)
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
     // glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
@@ -82,7 +131,17 @@ void render_test() {
     // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+    // Wireframe : GL_LINE_LOOP
+
     // glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+extern "C" {
+void newFrame(float dt) {
+    // printf("Draw called Delta=%f Total=%f\n", dt, elapsed);
+    opengl_draw(dt);
+    elapsed += dt;
+}
 }
 
 unsigned int loadShader(unsigned int shaderType, const char *source) {
