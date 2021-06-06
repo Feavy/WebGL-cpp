@@ -3,11 +3,18 @@
 #include <string>
 #include <webgl/webgl1.h>
 
-void render_test() {
+unsigned int loadShader(unsigned int shaderType, const char *source);
+unsigned int loadProgram(unsigned int vertexShader, unsigned int fragmentShader);
 
-    EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context = emscripten_webgl_create_context("canvas", nullptr);
+void render_test() {
+    EmscriptenWebGLContextAttributes config{stencil: GL_TRUE, antialias: GL_TRUE};
+
+    EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context = emscripten_webgl_create_context("canvas", &config);
     emscripten_webgl_make_context_current(context);
     emscripten_console_log("Context created");
+
+    // TODO : voir partie 4.2 -> Viewport
+
     // OpenGL ES 2.0
 
     glClearColor(1, 1, 1, 1);
@@ -38,49 +45,65 @@ void render_test() {
                                      "{                            \n"
                                      "   gl_Position = vPosition;  \n"
                                      "}                            \n";
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-    if (!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n%s\n", infoLog);
-    } else {
-        printf("Vertex shader compiled successfully!\n");
-    }
+    unsigned int vertexShader = loadShader(GL_VERTEX_SHADER, vertexShaderSource);
 
     const char *fragmentShaderSource = "precision mediump float;\n"
                                        "void main()                                  \n"
                                        "{                                            \n"
                                        "  gl_FragColor = vec4 ( 1.0, 0.5, 0.2, 1.0 );\n"
                                        "}                                            \n";
-    
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
 
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    unsigned int fragmentShader = loadShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+
+    unsigned int shaderProgram = loadProgram(vertexShader, fragmentShader);
+
+    glUseProgram(shaderProgram);
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    // Note : VAO uniquement dispo en WebGL2 (77% de coverage browers)
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+    // glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
+    glEnableVertexAttribArray(0);
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+unsigned int loadShader(unsigned int shaderType, const char *source) {
+    unsigned int shader = glCreateShader(shaderType);
+
+    glShaderSource(shader, 1, &source, NULL);
+    glCompileShader(shader);
+
+    int success;
+    char infoLog[512];
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 
     if (!success) {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        printf("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n%s\n", infoLog);
+        glGetShaderInfoLog(shader, 512, NULL, infoLog);
+        printf("ERROR::SHADER::%d::COMPILATION_FAILED\n%s\n", shaderType, infoLog);
     } else {
-        printf("Fragment shader compiled successfully!\n");
+        printf("Vertex shader compiled successfully!\n");
     }
+    return shader;
+}
 
+unsigned int loadProgram(unsigned int vertexShader, unsigned int fragmentShader) {
     unsigned int shaderProgram = glCreateProgram();
 
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
-    
+
+    // Bind vPosition to attribute 0
     glBindAttribLocation(shaderProgram, 0, "vPosition");
 
     glLinkProgram(shaderProgram);
+
+    int success;
+    char infoLog[512];
 
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
 
@@ -90,15 +113,5 @@ void render_test() {
     } else {
         printf("Program linked successfully!\n");
     }
-
-    glUseProgram(shaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-    // glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
-    glEnableVertexAttribArray(0);
-
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    return shaderProgram;
 }
