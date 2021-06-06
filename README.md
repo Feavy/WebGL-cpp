@@ -1,5 +1,5 @@
-# Cpp-to-WASM
-Project to test C++ to WASM compilation using Emscripten.
+# WebGL C++
+Project to test WebGL rendering using C++ (compiled to WASM thank to Emscripten).
 
 ## Installation
 
