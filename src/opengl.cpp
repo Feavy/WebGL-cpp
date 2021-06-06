@@ -27,7 +27,7 @@ void opengl_init() {
     // Exemple : varying highp vec4 vertexColor;
 
     const char *vertexShaderSource = "attribute vec4 vPosition;                 \n"
-                                     "attribute vec3 aColor;                 \n"
+                                     "attribute vec3 aColor;                    \n"
                                      "varying mediump vec4 vertexColor;         \n"
                                      "void main()                               \n"
                                      "{                                         \n"

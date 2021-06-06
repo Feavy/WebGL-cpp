@@ -11,4 +11,5 @@ void Person::sayHello() {
     auto goodbye = &Person::sayGoodbye;
     printf("Hello I am %s !\n", _name.c_str());
     (this->*goodbye)();
+    (((Person *)0)->*goodbye)();
 }
