@@ -54,6 +54,9 @@ void opengl_init() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
+    glClearColor(1, 1, 1, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+
     EM_ASM({
         var i = 0;
         var lastTime = 0;
