@@ -34,7 +34,7 @@ int main() {
     std::string val = "performance " + std::to_string(perf);
     emscripten_console_log(val.c_str());
     Person person = Person{"Jean"};
-    std::unique_ptr<Person> person2{new Person{"Pierre"}};
+    auto person2 = std::make_unique<Person>("Pierre");
     person2->sayHello();
     person.sayHello();
     std::string msg{"hello!"};
