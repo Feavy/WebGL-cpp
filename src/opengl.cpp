@@ -20,7 +20,6 @@ void opengl_init() {
     int nrAttributes;
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
 
-
     // Attention -> Différence de syntaxe des shaders GL2 / GL3
 
     // Utilisation de varying [<precision>p] vec4 <var>; pour passer des vec d'un shader à l'autre
@@ -55,7 +54,6 @@ void opengl_init() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-
     EM_ASM({
         var i = 0;
         var lastTime = 0;
@@ -63,7 +61,7 @@ void opengl_init() {
             var dt = timestamp - lastTime;
             lastTime = timestamp;
             Module._newFrame(dt);
-            if (i++ < 60*5) {
+            if (i++ < 60 * 10) {
                 requestAnimationFrame(step);
             }
         }
@@ -83,18 +81,19 @@ void opengl_draw(float dt) {
 
     // TODO : voir partie 4.2 -> Viewport
 
-
     glClearColor(1, 1, 1, 1);
     // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClear(GL_COLOR_BUFFER_BIT);
 
     // Dessin du triangle
 
+    float transformVal = (sin(elapsed / 1000.f) / 2.0f) + 0.5f;
+
     float vertices[] = {
-        -0.5f, 0.5f, 0.0f,   // top left
-        0.5f, 0.5f, 0.0f,    // top right
-        0.5f, -0.5f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f}; // bottom left
+        -0.5f, 0.5f, 0.0f,                   // top left
+        transformVal, transformVal, 0.0f,    // top right
+        0.5f, -0.5f, 0.0f,                   // bottom right
+        -transformVal, -transformVal, 0.0f}; // bottom left
 
     unsigned short indices[] = {
         0, 1, 3,
@@ -116,13 +115,13 @@ void opengl_draw(float dt) {
     // GL_STATIC_DRAW: the data is set only once and used many times.
     // GL_DYNAMIC_DRAW: the data is changed a lot and used many times.
 
-    float greenValue = (sin(elapsed/1000.f) / 2.0f) + 0.5f;
+    float greenValue = (sin(elapsed / 1000.f) / 2.0f) + 0.5f;
 
     int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
     glUseProgram(shaderProgram);
-    glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+    glUniform4f(vertexColorLocation, 0.0f, transformVal, 1 - transformVal, 1.0f);
 
-        // Note : VAO uniquement dispo en WebGL2 (77% de coverage browers)
+    // Note : VAO uniquement dispo en WebGL2 (77% de coverage browers)
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
     // glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
