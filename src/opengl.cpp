@@ -7,7 +7,7 @@ unsigned int loadShader(unsigned int shaderType, const char *source);
 unsigned int loadProgram(unsigned int vertexShader, unsigned int fragmentShader);
 
 void render_test() {
-    EmscriptenWebGLContextAttributes config{stencil: GL_TRUE, antialias: GL_TRUE};
+    EmscriptenWebGLContextAttributes config{stencil : GL_TRUE, antialias : GL_TRUE};
 
     EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context = emscripten_webgl_create_context("canvas", &config);
     emscripten_webgl_make_context_current(context);
@@ -23,16 +23,26 @@ void render_test() {
     // Dessin du triangle
 
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f, 0.5f, 0.0f};
+        -0.5f, 0.5f, 0.0f,   // top left
+        0.5f, 0.5f, 0.0f,    // top right
+        0.5f, -0.5f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f}; // bottom left
 
+    unsigned short indices[] = {
+        0, 1, 3,
+        1, 2, 3};
+
+    // Vertex buffer object
     unsigned int VBO;
     glGenBuffers(1, &VBO);
-
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Element buffer object
+    unsigned int EBO;
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // GL_STREAM_DRAW: the data is set only once and used by the GPU at most a few times.
     // GL_STATIC_DRAW: the data is set only once and used many times.
@@ -69,7 +79,10 @@ void render_test() {
     // glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
     glEnableVertexAttribArray(0);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+    // glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 unsigned int loadShader(unsigned int shaderType, const char *source) {
