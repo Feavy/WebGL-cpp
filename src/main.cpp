@@ -7,7 +7,7 @@
 #include "Person/Person.h"
 #include "Test.cpp"
 
-#include "opengl.h"
+#include "opengl/opengl.h"
 
 using namespace std::chrono;
 

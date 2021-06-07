@@ -1,14 +1,6 @@
-#include <cmath>
-#include <emscripten.h>
-#include <emscripten/html5.h>
-#include <memory>
-#include <string>
-#include <webgl/webgl1.h>
+#include "opengl.h"
 
-unsigned int loadShader(unsigned int shaderType, const char *source);
-unsigned int loadProgram(unsigned int vertexShader, unsigned int fragmentShader);
-
-unsigned int shaderProgram;
+Shader myVertexShader{"/assets/basic_shader/vertex.vs", "/assets/basic_shader/fragment.fs"};
 
 void opengl_init() {
     printf("[opengl_init]\n");
@@ -26,35 +18,7 @@ void opengl_init() {
     // Utilisation de varying [<precision>p] vec4 <var>; pour passer des vec d'un shader à l'autre
     // Exemple : varying highp vec4 vertexColor;
 
-    const char *vertexShaderSource = "attribute vec4 vPosition;                 \n"
-                                     "attribute vec3 aColor;                    \n"
-                                     "varying mediump vec4 vertexColor;         \n"
-                                     "void main()                               \n"
-                                     "{                                         \n"
-                                     "   gl_Position = vPosition;               \n"
-                                     "   vertexColor = vec4(aColor, 1.0);\n"
-                                     "}                                         \n";
-
-    unsigned int vertexShader = loadShader(GL_VERTEX_SHADER, vertexShaderSource);
-
-    const char *fragmentShaderSource = "precision mediump float;                \n"
-                                       "varying mediump vec4 vertexColor;       \n"
-                                       //    "uniform vec4 ourColor;                  \n"
-                                       "void main()                             \n"
-                                       "{                                       \n"
-                                       "  gl_FragColor = vertexColor;           \n"
-                                       "}                                       \n";
-
-    unsigned int fragmentShader = loadShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
-
-    shaderProgram = loadProgram(vertexShader, fragmentShader);
-
-    int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-
-    glUseProgram(shaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    myVertexShader.use();
 
     glClearColor(1, 1, 1, 1);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -126,9 +90,10 @@ void opengl_draw(float dt) {
 
     float greenValue = (sin(elapsed / 1000.f) / 2.0f) + 0.5f;
 
-    int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-    glUseProgram(shaderProgram);
-    glUniform4f(vertexColorLocation, 0.0f, transformVal, 1 - transformVal, 1.0f);
+    myVertexShader.use();
+    // int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+    // glUseProgram(shaderProgram);
+    // glUniform4f(vertexColorLocation, 0.0f, transformVal, 1 - transformVal, 1.0f);
 
     // Note : VAO uniquement dispo en WebGL2 (77% de coverage browers)
 
@@ -154,48 +119,4 @@ void newFrame(float dt) {
     opengl_draw(dt);
     elapsed += dt;
 }
-}
-
-unsigned int loadShader(unsigned int shaderType, const char *source) {
-    unsigned int shader = glCreateShader(shaderType);
-
-    glShaderSource(shader, 1, &source, NULL);
-    glCompileShader(shader);
-
-    int success;
-    char infoLog[512];
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-
-    if (!success) {
-        glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        printf("ERROR::SHADER::%d::COMPILATION_FAILED\n%s\n", shaderType, infoLog);
-    } else {
-        printf("Vertex shader compiled successfully!\n");
-    }
-    return shader;
-}
-
-unsigned int loadProgram(unsigned int vertexShader, unsigned int fragmentShader) {
-    unsigned int shaderProgram = glCreateProgram();
-
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-
-    // Bind vPosition to attribute 0
-    glBindAttribLocation(shaderProgram, 0, "vPosition");
-
-    glLinkProgram(shaderProgram);
-
-    int success;
-    char infoLog[512];
-
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-
-    if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        printf("ERROR::PROGRAM::LINK_FAILED\n%s\n", infoLog);
-    } else {
-        printf("Program linked successfully!\n");
-    }
-    return shaderProgram;
 }
