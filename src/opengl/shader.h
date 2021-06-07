@@ -6,10 +6,13 @@
 #include <webgl/webgl1.h>
 
 class Shader {
-public:
+private:
     unsigned int ID;
-
+    bool _loaded{false};
+public:
     Shader(const char* vertexPath, const char* fragmentPath);
+
+    bool loaded();
 
     void use();
 

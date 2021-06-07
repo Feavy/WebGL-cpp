@@ -69,6 +69,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
         printf("ERROR::PROGRAM::LINK_FAILED\n%s\n", infoLog);
     } else {
         printf("Program linked successfully!\n");
+        _loaded = true;
     }
 
     int vertexColorLocation = glGetUniformLocation(ID, "ourColor");
@@ -79,6 +80,11 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     // Free !
     free(vertexData);
     free(fragmentData);
+
+}
+
+bool Shader::loaded() {
+    return _loaded;
 }
 
 void Shader::use() {
