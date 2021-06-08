@@ -1,5 +1,5 @@
 CC = emcc
-CFLAGS = -g -s ASYNCIFY=1 -w -D__linux__ -lm -s EXPORTED_FUNCTIONS=_main,_hello,_newFrame --js-library library.js
+CFLAGS = -g -s ASYNCIFY=1 -w -D__linux__ -lm -s EXPORTED_FUNCTIONS=_main,_hello,_newFrame -s 'ASYNCIFY_IMPORTS=["load_image"]' --pre-js pre.js --js-library library.js
 SRC = $(wildcard *.cpp */*.cpp */*/*.cpp src/opengl/texture_triangle/*.cpp)
 
 all : $(SRC)

@@ -1,19 +1,33 @@
 #include "shader.h"
 
 // emscripten_wget_data
+typedef unsigned int image_t;
+
+extern "C" {
+void glTexImage2D_internal(GLenum target, GLint level, GLint internalformat, GLenum format, GLenum type, image_t image);
+image_t load_image(const char* path);
+}
+
+void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLenum format, GLenum type, image_t image) {
+    glTexImage2D_internal(target, level, internalformat, format, type, image);
+}
+
 
 Shader::Shader(const char *vertexPath, const char *fragmentPath, std::map<int, std::string> attribLocations) {
-    char* vertexData;
-    char* fragmentData;
+    char *vertexData;
+    char *fragmentData;
     int error, size;
 
-    emscripten_wget_data(vertexPath, (void**) &vertexData, &size, &error);
-    emscripten_wget_data(fragmentPath, (void**) &fragmentData, &size, &error);
+    emscripten_wget_data(vertexPath, (void **)&vertexData, &size, &error);
+    emscripten_wget_data(fragmentPath, (void **)&fragmentData, &size, &error);
     // Ou api fetch ?
     // Ou emscripten_async_wget_data ?
 
     // Free !
-    
+
+    image_t img = load_image("/assets/textures/wall.jpg");
+    printf("Received image : %d\n", img);
+
     // Vertex shader
 
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -32,7 +46,6 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath, std::map<int, s
         printf("Vertex shader compiled successfully!\n");
     }
 
-
     // Fragment shader
 
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -49,7 +62,6 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath, std::map<int, s
         printf("Fragment shader compiled successfully!\n");
     }
 
-
     // Program
 
     ID = glCreateProgram();
@@ -57,7 +69,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath, std::map<int, s
     glAttachShader(ID, vertexShader);
     glAttachShader(ID, fragmentShader);
 
-    for(auto const &[key, val] : attribLocations) {
+    for (auto const &[key, val] : attribLocations) {
         glBindAttribLocation(ID, key, val.c_str());
     }
     // Bind vPosition to attribute 0
@@ -84,11 +96,15 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath, std::map<int, s
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-    
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, img);
+    emscripten_glTexImage2D(0, 0, 0, 0, 0, 0, 0, 0, (void *)0);
+
+    // glTexImage2D()
+
     // Free !
     free(vertexData);
     free(fragmentData);
-
 }
 
 bool Shader::loaded() {
