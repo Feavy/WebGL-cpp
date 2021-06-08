@@ -1,6 +1,6 @@
 CC = emcc
 CFLAGS = -g -s ASYNCIFY=1 -w -D__linux__ -lm -s EXPORTED_FUNCTIONS=_main,_hello,_newFrame --js-library library.js
-SRC = $(wildcard *.cpp */*.cpp */*/*.cpp */*/*/*.cpp)
+SRC = $(wildcard *.cpp */*.cpp */*/*.cpp src/opengl/texture_triangle/*.cpp)
 
 all : $(SRC)
 		@echo Building $^

@@ -2,7 +2,7 @@
 
 // emscripten_wget_data
 
-Shader::Shader(const char *vertexPath, const char *fragmentPath) {
+Shader::Shader(const char *vertexPath, const char *fragmentPath, std::map<int, std::string> attribLocations) {
     char* vertexData;
     char* fragmentData;
     int error, size;
@@ -57,10 +57,13 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     glAttachShader(ID, vertexShader);
     glAttachShader(ID, fragmentShader);
 
+    for(auto const &[key, val] : attribLocations) {
+        glBindAttribLocation(ID, key, val.c_str());
+    }
     // Bind vPosition to attribute 0
-    glBindAttribLocation(ID, 0, "vPosition");
+    // glBindAttribLocation(ID, 0, "vPosition");
     // Bind aColor to attribute 0
-    glBindAttribLocation(ID, 1, "aColor");
+    // glBindAttribLocation(ID, 1, "aColor");
 
     // Note : autre possibilité avec glGetAttribLocation
     // https://github.com/bonigarcia/webgl-examples/blob/master/basic_concepts/draw-a-triangle.html

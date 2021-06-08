@@ -8,6 +8,8 @@
 #include "Test.cpp"
 
 #include "opengl/opengl.h"
+// #include "opengl/hello_square/hello_square.h"
+// #include "opengl/texture_triangle/texture_triangle.h"
 
 using namespace std::chrono;
 

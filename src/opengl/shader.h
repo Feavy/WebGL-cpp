@@ -4,13 +4,14 @@
 #include <emscripten.h>
 #include <emscripten/fetch.h>
 #include <webgl/webgl1.h>
+#include <map>
 
 class Shader {
 private:
     unsigned int ID;
     bool _loaded{false};
 public:
-    Shader(const char* vertexPath, const char* fragmentPath);
+    Shader(const char* vertexPath, const char* fragmentPath, std::map<int, std::string> attribLocations);
 
     bool loaded();
 
