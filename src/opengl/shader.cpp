@@ -59,6 +59,11 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
 
     // Bind vPosition to attribute 0
     glBindAttribLocation(ID, 0, "vPosition");
+    // Bind aColor to attribute 0
+    glBindAttribLocation(ID, 1, "aColor");
+
+    // Note : autre possibilité avec glGetAttribLocation
+    // https://github.com/bonigarcia/webgl-examples/blob/master/basic_concepts/draw-a-triangle.html
 
     glLinkProgram(ID);
 
