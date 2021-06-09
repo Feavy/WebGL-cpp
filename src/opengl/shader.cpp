@@ -1,16 +1,6 @@
 #include "shader.h"
 
-// emscripten_wget_data
-typedef unsigned int image_t;
-
-extern "C" {
-void glTexImage2D_internal(GLenum target, GLint level, GLint internalformat, GLenum format, GLenum type, image_t image);
-image_t load_image(const char* path);
-}
-
-void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLenum format, GLenum type, image_t image) {
-    glTexImage2D_internal(target, level, internalformat, format, type, image);
-}
+#include "opengl.h"
 
 
 Shader::Shader(const char *vertexPath, const char *fragmentPath, std::map<int, std::string> attribLocations) {
@@ -24,9 +14,6 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath, std::map<int, s
     // Ou emscripten_async_wget_data ?
 
     // Free !
-
-    image_t img = load_image("/assets/textures/wall.jpg");
-    printf("Received image : %d\n", img);
 
     // Vertex shader
 
@@ -97,10 +84,6 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath, std::map<int, s
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, img);
-    emscripten_glTexImage2D(0, 0, 0, 0, 0, 0, 0, 0, (void *)0);
-
-    // glTexImage2D()
 
     // Free !
     free(vertexData);

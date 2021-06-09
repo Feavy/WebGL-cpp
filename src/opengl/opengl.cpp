@@ -2,8 +2,12 @@
 
 float elapsed = 0;
 
-void opengl_init() {
-    printf("[opengl_init]\n");
+void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLenum format, GLenum type, image_t image) {
+    glTexImage2D_external(target, level, internalformat, format, type, image);
+}
+
+void opengl() {
+    printf("[opengl]\n");
     EmscriptenWebGLContextAttributes config{stencil : GL_TRUE, antialias : GL_TRUE};
 
     EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context = emscripten_webgl_create_context("canvas", &config);
@@ -18,6 +22,7 @@ void opengl_init() {
     // Utilisation de varying [<precision>p] vec4 <var>; pour passer des vec d'un shader à l'autre
     // Exemple : varying highp vec4 vertexColor;
 
+    opengl_init();
     myVertexShader.use();
 
     glClearColor(1, 1, 1, 1);
@@ -38,7 +43,7 @@ void opengl_init() {
         }
         requestAnimationFrame(prestep);
     });
-    printf("[opengl_init] Done.\n");
+    printf("[opengl] Done.\n");
 }
 
 extern "C" {

@@ -11,5 +11,16 @@
 extern float elapsed;
 extern Shader myVertexShader;
 
-void opengl_init();
+typedef unsigned int image_t;
+
+void opengl();
+extern void opengl_init();
 extern void opengl_draw(float dt);
+
+
+extern "C" {
+void glTexImage2D_external(GLenum target, GLint level, GLint internalformat, GLenum format, GLenum type, image_t image);
+image_t load_image(const char* path);
+}
+
+void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLenum format, GLenum type, image_t image);

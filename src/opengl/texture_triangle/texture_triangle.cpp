@@ -2,7 +2,15 @@
 
 #include "../opengl.h"
 
-Shader myVertexShader{"/assets/basic_shader/vertex.vs", "/assets/basic_shader/fragment.fs", {{0, "vPosition"}, {1, "aColor"}}};
+void opengl_init() {
+    myVertexShader = {"/assets/basic_shader/vertex.vs", "/assets/basic_shader/fragment.fs", {{0, "vPosition"}, {1, "aColor"}}};
+
+    image_t img = load_image("/assets/textures/wall.jpg");
+    printf("/assets/textures/wall.jpg -> %d\n", img);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, img);
+    // emscripten_glTexImage2D(0, 0, 0, 0, 0, 0, 0, 0, (void *)0);
+}
 
 void opengl_draw(float dt) {
     const float texCoords[] = {

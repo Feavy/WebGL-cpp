@@ -10,7 +10,6 @@ mergeInto(LibraryManager.library, {
             var counter = ++image_counter;
     
             images[counter] = new Image();
-            images[counter].src = path;
             images[counter].onload = function() {
                 out("Image loaded successfully");
                 wakeUp(counter);
@@ -19,9 +18,10 @@ mergeInto(LibraryManager.library, {
                 out("Error loading image " + path);
                 wakeUp(0);
             };
+            images[counter].src = path;
         });
     },
-    glTexImage2D_internal: function(target, level, internalFormat, format, type, imageIndex) {
+    glTexImage2D_external: function(target, level, internalFormat, format, type, imageIndex) {
         if(images[imageIndex]) {
             GLctx.texImage2D(target, level, internalFormat, format, type, images[imageIndex]);
         }else{

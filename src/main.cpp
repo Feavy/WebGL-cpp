@@ -45,7 +45,7 @@ int main() {
     consoleLog("console.log from C++");
     consoleLog(msg);
 
-    opengl_init();
+    opengl();
 
     return 0;
 }
