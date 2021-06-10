@@ -37,6 +37,7 @@ void opengl_init() {
     img = load_image("/assets/textures/awesomeface.png");
     printf("/assets/textures/awesomeface.png -> %d\n", img);
     if (img) {
+        flip_image_vertically(img);
         // target  mipmapLvl internalFormat imageFormat type image
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, img);
         glGenerateMipmap(GL_TEXTURE_2D);

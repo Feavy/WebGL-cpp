@@ -21,6 +21,7 @@ extern void opengl_draw(float dt);
 extern "C" {
 void glTexImage2D_external(GLenum target, GLint level, GLint internalformat, GLenum format, GLenum type, image_t image);
 image_t load_image(const char* path);
+void flip_image_vertically(image_t image);
 }
 
 void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLenum format, GLenum type, image_t image);
