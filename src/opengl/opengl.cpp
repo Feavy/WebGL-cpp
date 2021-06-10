@@ -14,6 +14,9 @@ void opengl() {
     emscripten_webgl_make_context_current(context);
     emscripten_console_log("Context created");
 
+    glClearColor(1, 1, 1, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+
     int nrAttributes;
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
 
@@ -24,9 +27,6 @@ void opengl() {
 
     opengl_init();
     myVertexShader.use();
-
-    glClearColor(1, 1, 1, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
 
     EM_ASM({
         var i = 0;
