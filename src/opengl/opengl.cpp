@@ -6,13 +6,22 @@ void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLenum forma
     glTexImage2D_external(target, level, internalformat, format, type, image);
 }
 
-void opengl() {
+OpenGLExampleRunner OpenGLExampleRunner::INSTANCE{};
+
+OpenGLExampleRunner::OpenGLExampleRunner() {
+}
+
+void OpenGLExampleRunner::setup() const {
     printf("[opengl]\n");
     EmscriptenWebGLContextAttributes config{stencil : GL_TRUE, antialias : GL_TRUE};
 
     EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context = emscripten_webgl_create_context("canvas", &config);
     emscripten_webgl_make_context_current(context);
     emscripten_console_log("Context created");
+}
+
+void OpenGLExampleRunner::run(Example* example) {
+    this->_example = example;
 
     glClearColor(1, 1, 1, 1);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -25,8 +34,8 @@ void opengl() {
     // Utilisation de varying [<precision>p] vec4 <var>; pour passer des vec d'un shader à l'autre
     // Exemple : varying highp vec4 vertexColor;
 
-    opengl_init();
-    myVertexShader.use();
+    this->_example->init();
+    this->_example->getShader().use();
 
     EM_ASM({
         var i = 0;
@@ -46,8 +55,7 @@ void opengl() {
     printf("[opengl] Done.\n");
 }
 
-extern "C" {
-void newFrame(float dt) {
+void OpenGLExampleRunner::draw(float dt) {
     // printf("Draw called Delta=%f Total=%f\n", dt, elapsed);
 
     // TODO : voir partie 4.2 -> Viewport
@@ -55,12 +63,16 @@ void newFrame(float dt) {
     glClearColor(1, 1, 1, 1);
     // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClear(GL_COLOR_BUFFER_BIT);
-    
-    if(!myVertexShader.loaded()) {
+
+    if(!_example->getShader().loaded()) {
         return;
     }
+    _example->draw(dt);
+}
 
-    opengl_draw(dt);
+extern "C" {
+void newFrame(float dt) {
+    OpenGLExampleRunner::INSTANCE.draw(dt);
     elapsed += dt;
 }
 }

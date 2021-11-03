@@ -7,16 +7,22 @@
 #include <string>
 #include <webgl/webgl1.h>
 #include "shader.h"
+#include "./example/example.h"
 
 extern float elapsed;
-extern Shader myVertexShader;
 
 typedef unsigned int image_t;
 
-void opengl();
-extern void opengl_init();
-extern void opengl_draw(float dt);
-
+class OpenGLExampleRunner {
+private:
+    Example* _example;
+    OpenGLExampleRunner();
+public:
+    static OpenGLExampleRunner INSTANCE;
+    void setup() const;
+    void run(Example* example);
+    void draw(float dt);
+};
 
 extern "C" {
 void glTexImage2D_external(GLenum target, GLint level, GLint internalformat, GLenum format, GLenum type, image_t image);

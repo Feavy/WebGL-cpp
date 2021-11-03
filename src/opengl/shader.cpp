@@ -30,7 +30,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath, std::map<int, s
         glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
         printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n%s\n", infoLog);
     } else {
-        printf("Vertex shader compiled successfully!\n");
+        printf("Vertex shader %s compiled successfully!\n", vertexPath);
     }
 
     // Fragment shader
@@ -46,12 +46,14 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath, std::map<int, s
         glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
         printf("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n%s\n", infoLog);
     } else {
-        printf("Fragment shader compiled successfully!\n");
+        printf("Fragment shader %s compiled successfully!\n", fragmentPath);
     }
 
     // Program
 
     ID = glCreateProgram();
+
+    printf("Created ID %d\n", ID);
 
     glAttachShader(ID, vertexShader);
     glAttachShader(ID, fragmentShader);
@@ -94,7 +96,7 @@ bool Shader::loaded() {
     return _loaded;
 }
 
-void Shader::use() {
+void Shader::use() const{
     glUseProgram(ID);
 }
 

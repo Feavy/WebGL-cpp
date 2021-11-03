@@ -8,14 +8,14 @@
 
 class Shader {
 private:
-    unsigned int ID;
     bool _loaded{false};
 public:
+    unsigned int ID;
     Shader(const char* vertexPath, const char* fragmentPath, std::map<int, std::string> attribLocations);
 
     bool loaded();
 
-    void use();
+    void use() const;
 
     void setBool(const std::string &name, bool value) const;
     void setInt(const std::string &name, int value) const;

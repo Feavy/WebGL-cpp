@@ -7,9 +7,9 @@
 #include "Person/Person.h"
 #include "Test.cpp"
 
+#include "opengl/texture_triangle/texture_triangle.h"
 #include "opengl/opengl.h"
 // #include "opengl/hello_square/hello_square.h"
-// #include "opengl/texture_triangle/texture_triangle.h"
 
 using namespace std::chrono;
 
@@ -45,7 +45,9 @@ int main() {
     consoleLog("console.log from C++");
     consoleLog(msg);
 
-    opengl();
+    OpenGLExampleRunner::INSTANCE.setup();
+
+    OpenGLExampleRunner::INSTANCE.run(new TextureTriangle());
 
     return 0;
 }

@@ -2,13 +2,21 @@
 
 #include "../opengl.h"
 
-unsigned int texture1, texture2;
+TextureTriangle::TextureTriangle() : Example(
+    {
+        "/assets/texture_shader/vertex.vs",
+        "/assets/texture_shader/fragment.fs",
+        {
+            {0, "vPosition"},
+            {1, "aColor"},
+            {2, "aTexCoord"}
+        }
+    }) { 
+}
 
-void opengl_init() {
-    myVertexShader = {"/assets/texture_shader/vertex.vs", "/assets/texture_shader/fragment.fs", {{0, "vPosition"}, {1, "aColor"}, {2, "aTexCoord"}}};
-
-    glGenTextures(1, &texture1);
-    glBindTexture(GL_TEXTURE_2D, texture1);
+void TextureTriangle::init(){
+    glGenTextures(1, &this->_texture1);
+    glBindTexture(GL_TEXTURE_2D, this->_texture1);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -31,8 +39,8 @@ void opengl_init() {
         emscripten_console_error("Could not load texture /assets/textures/wall.jpg");
     }
 
-    glGenTextures(1, &texture2);
-    glBindTexture(GL_TEXTURE_2D, texture2);
+    glGenTextures(1, &(this->_texture2));
+    glBindTexture(GL_TEXTURE_2D, this->_texture2);
 
     img = load_image("/assets/textures/awesomeface.png");
     printf("/assets/textures/awesomeface.png -> %d\n", img);
@@ -45,17 +53,16 @@ void opengl_init() {
         emscripten_console_error("Could not load texture /assets/textures/awesomeface.jpg");
     }
 
-    myVertexShader.use();
-    myVertexShader.setInt("texture1", 0); // GL_TEXTURE0
-    myVertexShader.setInt("texture2", 1); // GL_TEXTURE0
+    getShader().use();
+    getShader().setInt("texture1", 0); // GL_TEXTURE0
+    getShader().setInt("texture2", 1); // GL_TEXTURE0
 
     // free image memory ? --> supprimer le HTMLImageElement de l'array images ?
 
     // emscripten_glTexImage2D(0, 0, 0, 0, 0, 0, 0, 0, (void *)0);
 }
 
-void opengl_draw(float dt) {
-
+void TextureTriangle::draw(float dt) const {
     const float vertices[] = {
         // positions // colors // texture coords
         0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,   // top right
@@ -89,13 +96,13 @@ void opengl_draw(float dt) {
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    myVertexShader.use();
+    getShader().use();
 
     glActiveTexture(GL_TEXTURE0); // Optionnel (GL_TEXTURE0 activée par defaut)
-    glBindTexture(GL_TEXTURE_2D, texture1);
+    glBindTexture(GL_TEXTURE_2D, this->_texture1);
 
     glActiveTexture(GL_TEXTURE1); 
-    glBindTexture(GL_TEXTURE_2D, texture2);
+    glBindTexture(GL_TEXTURE_2D, this->_texture2);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }
