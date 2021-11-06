@@ -2,12 +2,24 @@
 
 #include "../opengl.h"
 
-Shader myVertexShader{"/assets/basic_shader/vertex.vs", "/assets/basic_shader/fragment.fs", {
-    {0, "vPosition"},
-    {1, "aColor"}
-}};
+HelloSquare::HelloSquare() : Example(
+    {
+        "/assets/basic_shader/vertex.vs",
+        "/assets/basic_shader/fragment.fs",
+        {
+            {0, "vPosition"},
+            {1, "aColor"}
+        }
+    }
+) {
 
-void opengl_draw(float dt) {
+}
+
+void HelloSquare::init() {
+
+}
+
+void HelloSquare::draw(float dt) const {
     // OpenGL ES 2.0
 
     // Dessin du carré
@@ -48,7 +60,7 @@ void opengl_draw(float dt) {
 
     float greenValue = (sin(elapsed / 1000.f) / 2.0f) + 0.5f;
 
-    myVertexShader.use();
+    getShader().use();
     // int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
     // glUseProgram(shaderProgram);
     // glUniform4f(vertexColorLocation, 0.0f, transformVal, 1 - transformVal, 1.0f);

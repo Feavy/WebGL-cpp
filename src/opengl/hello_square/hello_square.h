@@ -1,3 +1,10 @@
 #pragma once
 
-void opengl_draw(float dt);
+#include "../example/example.h"
+
+class HelloSquare : public Example {
+public:
+    HelloSquare();
+    void init();
+    void draw(float dt) const;
+};

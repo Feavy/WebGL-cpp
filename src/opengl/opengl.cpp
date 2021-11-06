@@ -35,7 +35,6 @@ void OpenGLExampleRunner::run(Example* example) {
     // Exemple : varying highp vec4 vertexColor;
 
     this->_example->init();
-    this->_example->getShader().use();
 
     EM_ASM({
         var i = 0;
@@ -63,6 +62,8 @@ void OpenGLExampleRunner::draw(float dt) {
     glClearColor(1, 1, 1, 1);
     // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    printf("Draw %d\n", _example->getShader().ID);
 
     if(!_example->getShader().loaded()) {
         return;
