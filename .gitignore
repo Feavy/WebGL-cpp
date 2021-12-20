@@ -1,2 +1,5 @@
-dist/main**
+dist/*
+!dist/.gitkeep
+build/*
+!build/gen
 .vscode/c_cpp_properties.json

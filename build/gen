@@ -1,0 +1,1 @@
+cmake -DCMAKE_TOOLCHAIN_FILE=/home/quentin/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake ..
