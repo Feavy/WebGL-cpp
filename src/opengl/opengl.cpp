@@ -13,7 +13,7 @@ OpenGLExampleRunner::OpenGLExampleRunner() {
 
 void OpenGLExampleRunner::setup() const {
     printf("[opengl]\n");
-    EmscriptenWebGLContextAttributes config{stencil : GL_TRUE, antialias : GL_TRUE};
+    EmscriptenWebGLContextAttributes config{.stencil = GL_TRUE, .antialias = GL_TRUE};
 
     EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context = emscripten_webgl_create_context("canvas", &config);
     emscripten_webgl_make_context_current(context);

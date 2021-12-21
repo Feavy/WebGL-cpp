@@ -1,6 +1,6 @@
 # https://github.com/emscripten-core/emscripten/tree/main/tests/cmake
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 
 project(webglcpp)
 
@@ -23,7 +23,7 @@ if (CMAKE_BUILD_TYPE STREQUAL Release)
     # Either MinSizeRel, RelWithDebInfo or Release, all which run with optimizations enabled.
     set(linkFlags "-O2")
 else()
-    set(linkFlags "-g3 -gsource-map --source-map-base http://localhost:8080/")
+    set(linkFlags "-g3 -gsource-map --source-map-base http://localhost:5501/dist/")
 endif()
 
 

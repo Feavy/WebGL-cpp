@@ -1,4 +1,6 @@
 {
     "liveServer.settings.port": 5501,
     "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, UseTab: Never, IndentWidth: 4, TabWidth: 4, ColumnLimit: 180, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, ColumnLimit: 0, AccessModifierOffset: -4, NamespaceIndentation: All, FixNamespaceComments: false }",
+    "C_Cpp.default.compilerPath": "/home/quentin/emsdk/upstream/bin/clang++",
+    "cmake.cmakePath": "/home/quentin/Téléchargements/cmake-3.22.1-linux-x86_64/bin/cmake"
 }
