@@ -23,7 +23,7 @@ if (CMAKE_BUILD_TYPE STREQUAL Release)
     # Either MinSizeRel, RelWithDebInfo or Release, all which run with optimizations enabled.
     set(linkFlags "-O2")
 else()
-    set(linkFlags "-g3 -gsource-map --source-map-base http://localhost:5501/dist/")
+    set(linkFlags "-gsource-map --source-map-base http://localhost:5501/dist/")
 endif()
 
 
