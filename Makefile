@@ -1,7 +1,0 @@
-CC = emcc
-CFLAGS = -g -s ASYNCIFY=1 -w -D__linux__ -lm -s EXPORTED_FUNCTIONS=_main,_hello,_newFrame -s ASYNCIFY_IMPORTS=load_image,flip_image_vertically --pre-js pre.js --js-library library.js
-SRC = $(wildcard src/*.cpp src/*/*.cpp src/*/*/*.cpp)
-
-all : $(SRC)
-		@echo Building $^
-		$(CC) $(CFLAGS) $^ -o dist/main.js

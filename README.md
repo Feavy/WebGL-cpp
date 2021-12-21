@@ -9,3 +9,11 @@ Project to test WebGL rendering using C++ (compiled to WASM thank to Emscripten)
 4. Add emsdk to path
 5. Install C/C++ Intellisense VS Code extension
 6. Update settings C_Cpp.default.includePath = "...\emsdk\upstream\emscripten\cache\sysroot\include"
+7.
+
+```bash
+cd build
+# edit gen file with a valid path to Emscripten.cmake
+./gen
+make
+```
