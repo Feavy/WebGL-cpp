@@ -20,8 +20,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 
+if (CMAKE_BUILD_TYPE STREQUAL Release)
+    # Either MinSizeRel, RelWithDebInfo or Release, all which run with optimizations enabled.
+    set(linkFlags "-O2")
+else()
+    set(linkFlags "-g3 -gsource-map --source-map-base http://localhost:8080/")
+endif()
+
+
 # Enable Asyncify
-set(linkFlags "-s ASYNCIFY=1")
+set(linkFlags "${linkFlags} -s ASYNCIFY=1")
 
 # List exported functions
 set(linkFlags "${linkFlags} -s EXPORTED_FUNCTIONS=_main,_hello,_newFrame")
