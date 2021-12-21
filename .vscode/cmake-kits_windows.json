@@ -1,0 +1,9 @@
+[
+    {
+        "name": "Emscripten Kit",
+        "compilers": {
+            "C": "C:\\Users\\<user>\\AppData\\Roaming\\emsdk\\upstream\\emscripten\\emcc.bat",
+            "CXX": "C:\\Users\\<user>\\AppData\\Roaming\\emsdk\\upstream\\emscripten\\em++.bat"
+        }
+    }
+]

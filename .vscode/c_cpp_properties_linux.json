@@ -4,8 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/quentin/emsdk/upstream/emscripten/cache/sysroot/include",
-                "/home/quentin/emsdk/upstream/include/c++/v1"
+                "/home/<user>/emsdk/upstream/emscripten/cache/sysroot/include",
+                "/home/<user>/emsdk/upstream/include/c++/v1"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

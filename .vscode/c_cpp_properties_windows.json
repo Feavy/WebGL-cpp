@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Users/<user>/AppData/Roaming/emsdk/upstream/emscripten/cache/sysroot/include"
+            ]
+        }
+    ],
+    "version": 4
+}

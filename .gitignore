@@ -2,3 +2,6 @@ dist/*
 !dist/.gitkeep
 build/*
 !build/gen
+.vscode/c_cpp_properties.json
+.vscode/settings.json
+.vscode/cmake-kits.json
