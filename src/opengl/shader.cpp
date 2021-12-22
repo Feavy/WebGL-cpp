@@ -53,7 +53,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath, std::map<int, s
 
     ID = glCreateProgram();
 
-    printf("Created ID %d\n", ID);
+    printf("Created Shader ID %d\n", ID);
 
     glAttachShader(ID, vertexShader);
     glAttachShader(ID, fragmentShader);

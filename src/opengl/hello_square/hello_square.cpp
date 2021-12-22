@@ -17,6 +17,33 @@ HelloSquare::HelloSquare() : Example(
 
 void HelloSquare::init() {
 
+    unsigned short indices[] = {
+        0, 1, 3,
+        1, 2, 3
+    };
+
+    float vertices[] = {
+        // position  // color
+        0, 0, 0, /**/ 0, 0, 0,    // top left
+        0, 0, 0, /**/ 0, 0, 0,    // top right
+        0, 0, 0, /**/ 0, 0, 0,    // bottom right
+        0, 0, 0, /**/ 0, 0, 0};   // bottom left
+
+    // Vertex buffer object
+    glGenBuffers(1, &_VBO);
+    // Element buffer object
+    glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+    
+
+    glGenBuffers(1, &_EBO);
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
+    // GL_STREAM_DRAW: the data is set only once and used by the GPU at most a few times.
+    // GL_STATIC_DRAW: the data is set only once and used many times.
+    // GL_DYNAMIC_DRAW: the data is changed a lot and used many times.
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
 }
 
 void HelloSquare::draw(float dt) const {
@@ -38,27 +65,13 @@ void HelloSquare::draw(float dt) const {
     https://github.com/bonigarcia/webgl-examples/blob/master/basic_concepts/colored-triangle.html
     */
 
-    unsigned short indices[] = {
-        0, 1, 3,
-        1, 2, 3};
-
-    // Vertex buffer object
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
 
     // Element buffer object
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
 
-    // GL_STREAM_DRAW: the data is set only once and used by the GPU at most a few times.
-    // GL_STATIC_DRAW: the data is set only once and used many times.
-    // GL_DYNAMIC_DRAW: the data is changed a lot and used many times.
-
-    float greenValue = (sin(elapsed / 1000.f) / 2.0f) + 0.5f;
+    // float greenValue = (sin(elapsed / 1000.f) / 2.0f) + 0.5f;
 
     getShader().use();
     // int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");

@@ -4,7 +4,7 @@
 
 class TextureTriangle : public Example {
 private:
-    unsigned int _texture1, _texture2;
+    unsigned int _texture1, _texture2, _VBO, _EBO;
 public:
     TextureTriangle();
     void init();

@@ -21,10 +21,7 @@ void OpenGLExampleRunner::setup() const {
 }
 
 void OpenGLExampleRunner::run(Example* example) {
-    this->_example = example;
-
-    glClearColor(1, 1, 1, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
+    _example = example;
 
     int nrAttributes;
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
@@ -34,7 +31,7 @@ void OpenGLExampleRunner::run(Example* example) {
     // Utilisation de varying [<precision>p] vec4 <var>; pour passer des vec d'un shader à l'autre
     // Exemple : varying highp vec4 vertexColor;
 
-    this->_example->init();
+    _example->init();
 
     EM_ASM({
         var i = 0;

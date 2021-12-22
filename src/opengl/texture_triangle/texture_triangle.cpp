@@ -3,7 +3,7 @@
 #include "../opengl.h"
 
 TextureTriangle::TextureTriangle() : Example(
-    {
+    Shader{
         "/assets/texture_shader/vertex.vs",
         "/assets/texture_shader/fragment.fs",
         {
@@ -16,9 +16,8 @@ TextureTriangle::TextureTriangle() : Example(
 }
 
 void TextureTriangle::init(){
-    printf("INIT begin %d\n", _shader.ID);
-    glGenTextures(1, &this->_texture1);
-    glBindTexture(GL_TEXTURE_2D, this->_texture1);
+    glGenTextures(1, &_texture1);
+    glBindTexture(GL_TEXTURE_2D, _texture1);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -41,8 +40,8 @@ void TextureTriangle::init(){
         emscripten_console_error("Could not load texture /assets/textures/wall.jpg");
     }
 
-    glGenTextures(1, &(this->_texture2));
-    glBindTexture(GL_TEXTURE_2D, this->_texture2);
+    glGenTextures(1, &_texture2);
+    glBindTexture(GL_TEXTURE_2D, _texture2);
 
     img = load_image("/assets/textures/awesomeface.png");
     printf("/assets/textures/awesomeface.png -> %d\n", img);
@@ -57,15 +56,8 @@ void TextureTriangle::init(){
 
     _shader.use();
     _shader.setInt("texture1", 0); // GL_TEXTURE0
-    _shader.setInt("texture2", 1); // GL_TEXTURE0
+    _shader.setInt("texture2", 1); // GL_TEXTURE1
 
-    // free image memory ? --> supprimer le HTMLImageElement de l'array images ?
-
-    // emscripten_glTexImage2D(0, 0, 0, 0, 0, 0, 0, 0, (void *)0);
-    printf("INIT end %d\n", _shader.ID);
-}
-
-void TextureTriangle::draw(float dt) const {
     const float vertices[] = {
         // positions // colors // texture coords
         0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,   // top right
@@ -76,18 +68,16 @@ void TextureTriangle::draw(float dt) const {
 
     unsigned short indices[] = {
         0, 1, 3,
-        1, 2, 3};
+        1, 2, 3
+    };
 
-
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glGenBuffers(1, &_VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, _VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // Element buffer object
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glGenBuffers(1, &_EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);
@@ -99,7 +89,16 @@ void TextureTriangle::draw(float dt) const {
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    // _shader.use();
+    // free image memory ? --> supprimer le HTMLImageElement de l'array images ?
+
+    // emscripten_glTexImage2D(0, 0, 0, 0, 0, 0, 0, 0, (void *)0);
+}
+
+void TextureTriangle::draw(float dt) const {
+    getShader().use();
+
+    glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
 
     glActiveTexture(GL_TEXTURE0); // Optionnel (GL_TEXTURE0 activée par defaut)
     glBindTexture(GL_TEXTURE_2D, this->_texture1);

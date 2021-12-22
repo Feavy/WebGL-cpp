@@ -4,7 +4,7 @@
 
 class Example {
 protected:
-    Shader &_shader;
+    Shader _shader;
 public:
     Example(Shader shader);
     virtual void init() = 0;
