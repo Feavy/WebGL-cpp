@@ -1,11 +1,11 @@
-#include "hello_square.h"
+#include "animated_square.h"
 
 #include "../opengl.h"
 
-HelloSquare::HelloSquare() : Example(
+AnimatedSquare::AnimatedSquare() : Example(
     {
-        "/assets/shaders/basic/vertex.vs",
-        "/assets/shaders/basic/fragment.fs",
+        "/assets/shaders/animated_square/vertex.vs",
+        "/assets/shaders/animated_square/fragment.fs",
         {
             {0, "vPosition"},
             {1, "aColor"}
@@ -15,7 +15,7 @@ HelloSquare::HelloSquare() : Example(
 
 }
 
-void HelloSquare::init() {
+void AnimatedSquare::init() {
 
     unsigned short indices[] = {
         0, 1, 3,
@@ -56,7 +56,7 @@ void HelloSquare::init() {
 
 }
 
-void HelloSquare::draw(float dt) const {
+void AnimatedSquare::draw(float dt) const {
     // OpenGL ES 2.0
 
     // Dessin du carré
@@ -64,11 +64,12 @@ void HelloSquare::draw(float dt) const {
     float transformVal = (sin(elapsed / 1000.f) / 2.0f) + 0.5f;
 
     float vertices[] = {
-        // position  // color
-        -0.5f, 0.5f, 0.0f, /**/ 0.f, 1-transformVal, transformVal,                   // top left
-        transformVal, transformVal, 0.0f, /**/ 0.f, transformVal, 1-transformVal,    // top right
-        0.5f, -0.5f, 0.0f, /**/ transformVal, 0.f, 0.f,                   // bottom right
-        -transformVal, -transformVal, 0.0f, /**/ 1-transformVal, transformVal, transformVal}; // bottom left
+        // position                                             // color
+        -0.5f,         0.5f,          0.0f, /**/ 0.f,            1-transformVal, transformVal,      // top left
+        transformVal,  transformVal,  0.0f, /**/ 0.f,            transformVal,   1-transformVal,    // top right
+        0.5f,          -0.5f,         0.0f, /**/ transformVal,   0.f,            0.f,               // bottom right
+        -transformVal, -transformVal, 0.0f, /**/ 1-transformVal, transformVal,   transformVal       // bottom left
+    };     
     /*
     Autre possibilité : faire un second tableau pour les couleurs
     et utiliser un système analogue au tableau vertices pour y accéder depuis le shader

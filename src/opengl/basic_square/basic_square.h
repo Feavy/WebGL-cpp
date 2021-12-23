@@ -2,11 +2,11 @@
 
 #include "../example/example.h"
 
-class HelloSquare : public Example {
+class BasicSquare : public Example {
 private:
-    unsigned int _VBO, _EBO;
+    unsigned int programID, _VBO, _EBO;
 public:
-    HelloSquare();
+    BasicSquare();
     void init();
     void draw(float dt) const;
 };
