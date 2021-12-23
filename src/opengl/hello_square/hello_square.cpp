@@ -4,8 +4,8 @@
 
 HelloSquare::HelloSquare() : Example(
     {
-        "/assets/basic_shader/vertex.vs",
-        "/assets/basic_shader/fragment.fs",
+        "/assets/shaders/basic/vertex.vs",
+        "/assets/shaders/basic/fragment.fs",
         {
             {0, "vPosition"},
             {1, "aColor"}

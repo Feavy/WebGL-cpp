@@ -4,8 +4,8 @@
 
 TextureTriangle::TextureTriangle() : Example(
     Shader{
-        "/assets/texture_shader/vertex.vs",
-        "/assets/texture_shader/fragment.fs",
+        "/assets/shaders/texture/vertex.vs",
+        "/assets/shaders/texture/fragment.fs",
         {
             {0, "vPosition"},
             {1, "aColor"},
