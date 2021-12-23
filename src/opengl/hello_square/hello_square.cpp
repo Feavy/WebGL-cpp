@@ -44,6 +44,16 @@ void HelloSquare::init() {
     // GL_DYNAMIC_DRAW: the data is changed a lot and used many times.
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+    // Note : VAO uniquement dispo en WebGL2 (77% de coverage browers)
+
+    // Ou utiliser getAttribLocation
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    // glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
+
 }
 
 void HelloSquare::draw(float dt) const {
@@ -73,20 +83,10 @@ void HelloSquare::draw(float dt) const {
 
     // float greenValue = (sin(elapsed / 1000.f) / 2.0f) + 0.5f;
 
-    getShader().use();
+    _shader->use();
     // int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
     // glUseProgram(shaderProgram);
     // glUniform4f(vertexColorLocation, 0.0f, transformVal, 1 - transformVal, 1.0f);
-
-    // Note : VAO uniquement dispo en WebGL2 (77% de coverage browers)
-
-    // Ou utiliser getAttribLocation
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    // glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
 
     // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 

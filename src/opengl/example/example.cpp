@@ -1,9 +1,9 @@
 #include "example.h"
 
-Example::Example(Shader shader) : _shader{shader} {
+Example::Example(Shader shader) : _shader{std::make_unique<Shader>(shader)} {
 
 }
 
-Shader Example::getShader() const {
-    return _shader;
+Example::Example() {
+
 }

@@ -12,7 +12,7 @@ TextureTriangle::TextureTriangle() : Example(
             {2, "aTexCoord"}
         }
     }) {
-    printf("Created %d\n", _shader.ID);
+    printf("Created %d\n", _shader->ID);
 }
 
 void TextureTriangle::init(){
@@ -54,9 +54,9 @@ void TextureTriangle::init(){
         emscripten_console_error("Could not load texture /assets/textures/awesomeface.jpg");
     }
 
-    _shader.use();
-    _shader.setInt("texture1", 0); // GL_TEXTURE0
-    _shader.setInt("texture2", 1); // GL_TEXTURE1
+    _shader->use();
+    _shader->setInt("texture1", 0); // GL_TEXTURE0
+    _shader->setInt("texture2", 1); // GL_TEXTURE1
 
     const float vertices[] = {
         // positions // colors // texture coords
@@ -95,7 +95,7 @@ void TextureTriangle::init(){
 }
 
 void TextureTriangle::draw(float dt) const {
-    getShader().use();
+    _shader->use();
 
     glBindBuffer(GL_ARRAY_BUFFER, _VBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);

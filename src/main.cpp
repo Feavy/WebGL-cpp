@@ -9,6 +9,7 @@
 
 #include "opengl/texture_triangle/texture_triangle.h"
 #include "opengl/hello_square/hello_square.h"
+#include "opengl/basic_triangle/basic_triangle.h"
 #include "opengl/opengl.h"
 
 using namespace std::chrono;
@@ -47,7 +48,7 @@ int main() {
 
     OpenGLExampleRunner::INSTANCE.setup();
 
-    OpenGLExampleRunner::INSTANCE.run(new HelloSquare());
+    OpenGLExampleRunner::INSTANCE.run(new BasicTriangle());
 
     return 0;
 }

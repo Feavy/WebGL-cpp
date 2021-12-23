@@ -60,11 +60,6 @@ void OpenGLExampleRunner::draw(float dt) {
     // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    printf("Draw %d\n", _example->getShader().ID);
-
-    if(!_example->getShader().loaded()) {
-        return;
-    }
     _example->draw(dt);
 }
 
