@@ -4,6 +4,7 @@
         "compilers": {
             "C": "C:\\Users\\<user>\\AppData\\Roaming\\emsdk\\upstream\\emscripten\\emcc.bat",
             "CXX": "C:\\Users\\<user>\\AppData\\Roaming\\emsdk\\upstream\\emscripten\\em++.bat"
-        }
+        },
+        "toolchainFile": "C:\\Users\\<user>\\AppData\\Roaming\\emsdk\\upstream\\emscripten\\cmake\\Modules\\Platform\\Emscripten.cmake"
     }
 ]
