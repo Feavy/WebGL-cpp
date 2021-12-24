@@ -11,6 +11,7 @@
 #include "opengl/animated_square/animated_square.h"
 #include "opengl/basic_square/basic_square.h"
 #include "opengl/shiny_triangle/shiny_triangle.h"
+#include "opengl/rotating_triangle/rotating_triangle.h"
 #include "opengl/opengl.h"
 
 using namespace std::chrono;
@@ -49,7 +50,7 @@ int main() {
 
     OpenGLExampleRunner::INSTANCE.setup();
 
-    OpenGLExampleRunner::INSTANCE.run(new ShinyTriangle());
+    OpenGLExampleRunner::INSTANCE.run(new RotatingTriangle());
 
     return 0;
 }

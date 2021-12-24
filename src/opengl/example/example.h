@@ -10,5 +10,5 @@ public:
     Example(Shader shader);
     Example();
     virtual void init() = 0;
-    virtual void draw(float dt) const = 0;
+    virtual void draw(float dt) = 0;
 };
