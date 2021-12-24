@@ -1,11 +1,11 @@
-#include "texture_triangle.h"
+#include "texture_square.h"
 
 #include "../opengl.h"
 
-TextureTriangle::TextureTriangle() : Example(
+TextureSquare::TextureSquare() : Example(
     Shader{
-        "/assets/shaders/texture/vertex.vs",
-        "/assets/shaders/texture/fragment.fs",
+        "/assets/shaders/texture_square/vertex.vs",
+        "/assets/shaders/texture_square/fragment.fs",
         {
             {0, "vPosition"},
             {1, "aColor"},
@@ -15,7 +15,7 @@ TextureTriangle::TextureTriangle() : Example(
     printf("Created %d\n", _shader->ID);
 }
 
-void TextureTriangle::init(){
+void TextureSquare::init(){
     glGenTextures(1, &_texture1);
     glBindTexture(GL_TEXTURE_2D, _texture1);
 
@@ -94,7 +94,7 @@ void TextureTriangle::init(){
     // emscripten_glTexImage2D(0, 0, 0, 0, 0, 0, 0, 0, (void *)0);
 }
 
-void TextureTriangle::draw(float dt) const {
+void TextureSquare::draw(float dt) {
     _shader->use();
 
     glBindBuffer(GL_ARRAY_BUFFER, _VBO);

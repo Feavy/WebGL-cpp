@@ -9,5 +9,5 @@ private:
 public:
     AnimatedSquare();
     void init();
-    void draw(float dt) const;
+    void draw(float dt);
 };

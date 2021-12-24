@@ -114,8 +114,7 @@ void BasicSquare::init() {
     glEnableVertexAttribArray(0); 
 }
 
-void BasicSquare::draw(float dt) const {
-
+void BasicSquare::draw(float dt) {
     glBindBuffer(GL_ARRAY_BUFFER, _VBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
 

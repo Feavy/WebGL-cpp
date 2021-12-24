@@ -105,7 +105,7 @@ void ShinyTriangle::init() {
     colorLocation = glGetUniformLocation(programID, "color");
 }
 
-void ShinyTriangle::draw(float dt) const {
+void ShinyTriangle::draw(float dt) {
     float green = (sin(elapsed / 1000.f) / 2.0f) + 0.5f;
 
     glUniform4f(colorLocation, 0, green, 0, 1);

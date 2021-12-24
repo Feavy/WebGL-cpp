@@ -8,5 +8,5 @@ private:
 public:
     BasicSquare();
     void init();
-    void draw(float dt) const;
+    void draw(float dt);
 };

@@ -54,7 +54,7 @@ void AnimatedSquare::init() {
 
 }
 
-void AnimatedSquare::draw(float dt) const {
+void AnimatedSquare::draw(float dt) {
     // OpenGL ES 2.0
 
     // Dessin du carré

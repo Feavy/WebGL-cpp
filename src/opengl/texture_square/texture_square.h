@@ -2,11 +2,11 @@
 
 #include "../example/example.h"
 
-class TextureTriangle : public Example {
+class TextureSquare : public Example {
 private:
     unsigned int _texture1, _texture2, _VBO, _EBO;
 public:
-    TextureTriangle();
+    TextureSquare();
     void init();
-    void draw(float dt) const;
+    void draw(float dt);
 };

@@ -7,7 +7,7 @@
 #include "Person/Person.h"
 #include "Test.cpp"
 
-#include "opengl/texture_triangle/texture_triangle.h"
+#include "opengl/texture_square/texture_square.h"
 #include "opengl/animated_square/animated_square.h"
 #include "opengl/basic_square/basic_square.h"
 #include "opengl/shiny_triangle/shiny_triangle.h"
@@ -50,7 +50,7 @@ int main() {
 
     OpenGLExampleRunner::INSTANCE.setup();
 
-    OpenGLExampleRunner::INSTANCE.run(new RotatingTriangle());
+    OpenGLExampleRunner::INSTANCE.run(new TextureSquare());
 
     return 0;
 }
