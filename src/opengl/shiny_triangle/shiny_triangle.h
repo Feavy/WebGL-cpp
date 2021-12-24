@@ -3,11 +3,12 @@
 #include "../opengl.h"
 #include "../example/example.h"
 
-class AnimatedSquare : public Example {
+class ShinyTriangle : public Example {
 private:
-    unsigned int _VBO, _EBO;
+    unsigned int programID, _VBO;
+    int colorLocation;
 public:
-    AnimatedSquare();
+    ShinyTriangle();
     void init();
     void draw(float dt) const;
 };

@@ -1,7 +1,5 @@
 #include "animated_square.h"
 
-#include "../opengl.h"
-
 AnimatedSquare::AnimatedSquare() : Example(
     {
         "/assets/shaders/animated_square/vertex.vs",
