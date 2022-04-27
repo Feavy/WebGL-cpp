@@ -1,0 +1,10 @@
+[
+    {
+        "name": "Emscripten Kit",
+        "compilers": {
+            "C": "/home/<user>/emsdk/upstream/emscripten/emcc",
+            "CXX": "/home/<user>/emsdk/upstream/emscripten/em++"
+        },
+        "toolchainFile": "/home/<user>/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+    }
+]
